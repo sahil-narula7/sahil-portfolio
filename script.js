@@ -92,7 +92,15 @@ function handleEnter(e) {
   e.preventDefault(); boot();
 }
 window.addEventListener("keydown", handleEnter);
+// click anywhere on terminal = boot
 terminal.addEventListener("click", () => { terminal.focus(); if (promptReady) boot(); });
+// also boot on any keypress (space, arrow etc) not just Enter
+terminal.addEventListener("keydown", e => {
+  if (!promptReady) return;
+  if (e.key === " " || e.key === "Enter" || e.key === "ArrowRight") {
+    e.preventDefault(); boot();
+  }
+});
 
 /* ══════════════════════════════════════
    UPTIME COUNTER
@@ -257,13 +265,18 @@ function startCursorTrail() {
 /* ══════════════════════════════════════
    KONAMI CODE → MATRIX RAIN
    ↑ ↑ ↓ ↓ ← → ← → B A
+   Click anywhere on desktop first to focus
 ══════════════════════════════════════ */
 const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
 let konamiIdx = 0, matrixActive = false;
 let matrixCanvas, matrixCtx2, matrixRAF, matrixCols, matrixDrops;
 
-window.addEventListener("keydown", e => {
+// listen on document so it works anywhere on the page
+document.addEventListener("keydown", e => {
+  // skip if typing in input/textarea
   if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+  // skip boot screen keys
+  if (terminal && !terminal.classList.contains("done")) return;
   if (e.key === KONAMI[konamiIdx]) {
     if (++konamiIdx === KONAMI.length) { konamiIdx = 0; toggleMatrix(); }
   } else { konamiIdx = 0; }

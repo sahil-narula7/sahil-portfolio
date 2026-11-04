@@ -641,6 +641,20 @@ a { text-decoration: none; color: inherit; }
 }
 .project-link:hover { color: var(--cyan); border-color: var(--cyan); }
 
+.project-links {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.live-link {
+  color: var(--cyan);
+  border-bottom: 1px solid var(--cyan);
+  font-weight: 500;
+}
+.live-link:hover { color: var(--amber); border-color: var(--amber); }
+
 /* ── Documents ── */
 .file-list { padding: 12px; }
 .file-list button {
