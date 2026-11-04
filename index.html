@@ -108,6 +108,9 @@
             <button class="desktop-icon" data-window="dino-window">
               <span class="icon dino-icon">🦕</span><strong>dino.exe</strong>
             </button>
+            <button class="desktop-icon" data-window="terminal-window">
+              <span class="icon term-icon">⌨</span><strong>terminal</strong>
+            </button>
           </div>
 
           <!-- ── MAIN WINDOW (Home / Hero) ── -->
@@ -371,6 +374,36 @@
             </div>
             <div class="statusbar">
               <span>no signal detected · score increases speed</span><span>SPACE/↑ = JUMP (x2) &nbsp;|&nbsp; ↓ = DUCK &nbsp;|&nbsp; TAP = JUMP</span>
+            </div>
+          </div>
+
+          <!-- ── TERMINAL WINDOW ── -->
+          <div class="window hidden-window term-window" id="terminal-window">
+            <div class="window-titlebar">
+              <span class="traffic-lights"><i></i><i></i><i></i></span
+              ><strong>terminal — sahil@portfolio: ~</strong
+              ><button class="window-tools close-window" aria-label="Close terminal">
+                — □ ×
+              </button>
+            </div>
+            <div class="term-body" id="term-body" aria-live="polite">
+              <div class="term-output" id="term-output">
+                <div class="term-line"><span class="term-dim">sahil.exe terminal v1.0 — type <span class="term-highlight">help</span> to see commands</span></div>
+              </div>
+              <div class="term-input-row">
+                <span class="term-prompt">visitor@sahil:~$</span>
+                <input
+                  type="text"
+                  id="term-input"
+                  class="term-input"
+                  autocomplete="off"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  placeholder="type a command..."
+                  aria-label="Terminal input"
+                />
+              </div>
             </div>
           </div>
 

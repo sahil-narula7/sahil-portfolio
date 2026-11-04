@@ -1068,3 +1068,533 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.quadraticCurveTo(x,y,x+r,y);
   ctx.closePath();
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   TERMINAL WINDOW — interactive portfolio explorer
+   ──────────────────────────────────────────────────────────────
+   Commands:
+     help              list all commands
+     ls / dir          list sections/files
+     cd <section>      open a window
+     cat <file>        print file contents
+     whoami            about sahil
+     skills            show tech stack
+     projects          list projects
+     open <project>    open project live link
+     github            open github profile
+     contact           show contact info
+     clear / cls       clear terminal
+     theme             toggle dark/light
+     dino              launch dino game
+     secret            hint for Konami code
+     date              current date/time
+     pwd               current path
+══════════════════════════════════════════════════════════════ */
+
+(function initTerminal() {
+  // wait for DOM
+  const winEl    = document.getElementById("terminal-window");
+  const outputEl = document.getElementById("term-output");
+  const inputEl  = document.getElementById("term-input");
+  const bodyEl   = document.getElementById("term-body");
+
+  if (!winEl || !outputEl || !inputEl) return;
+
+  let cwd       = "~";
+  let history   = [];
+  let histIdx   = -1;
+
+  /* ── filesystem map ── */
+  const FS = {
+    "~": ["about/", "skills/", "projects/", "documents/", "contact/", "dino.exe"],
+    "~/about": ["readme.txt"],
+    "~/skills": ["superpowers.txt", "stack.txt"],
+    "~/projects": ["worknest/", "dino-history/", "alien-explorer/"],
+    "~/projects/worknest":        ["info.txt"],
+    "~/projects/dino-history":    ["info.txt"],
+    "~/projects/alien-explorer":  ["info.txt"],
+    "~/documents": ["experience.log", "leadership.md", "skills.txt"],
+    "~/contact":   ["email.txt", "links.txt"],
+  };
+
+  /* ── file contents ── */
+  const FILES = {
+    "~/about/readme.txt": [
+      { t:"ok",   v:"═══════════════════════════" },
+      { t:"bold", v:" SAHIL NARULA / README.TXT" },
+      { t:"ok",   v:"═══════════════════════════" },
+      { t:"",     v:"" },
+      { t:"bold", v:"Name    : Sahil Narula" },
+      { t:"",     v:"Role    : Software Engineering Intern" },
+      { t:"",     v:"Location: New Delhi, India" },
+      { t:"",     v:"" },
+      { t:"",     v:"I'm a CS student who enjoys turning ideas into" },
+      { t:"",     v:"reliable, polished web experiences." },
+      { t:"",     v:"" },
+      { t:"",     v:"I work across frontend and backend — React," },
+      { t:"",     v:"Node.js, SQLite, APIs, and deployment workflows." },
+      { t:"",     v:"" },
+      { t:"warn", v:"Lead a 15-member team at TechSpace Open Lab." },
+      { t:"warn", v:"Delivered workshops for 80+ students." },
+    ],
+    "~/skills/superpowers.txt": [
+      { t:"ok",   v:"TECH SUPERPOWERS" },
+      { t:"dim",  v:"─────────────────" },
+      { t:"bold", v:"BUILD  : React · TypeScript · JavaScript · HTML · CSS" },
+      { t:"bold", v:"SHIP   : Node.js · REST APIs · SQLite · PostgreSQL" },
+      { t:"bold", v:"TOOLS  : Git · GitHub · Netlify · Railway · AWS" },
+      { t:"bold", v:"THINK  : Data structures · API integration · Debugging" },
+      { t:"",     v:"" },
+      { t:"warn", v:"BONUS  : Explaining complex ideas to new developers" },
+    ],
+    "~/skills/stack.txt": [
+      { t:"ok",   v:"STACK.TXT" },
+      { t:"dim",  v:"──────────" },
+      { t:"",     v:"React / TypeScript   ████████████░░  90%" },
+      { t:"",     v:"HTML / CSS / Design  ███████████████ 95%" },
+      { t:"",     v:"Node.js / REST APIs  ████████████░░  85%" },
+      { t:"",     v:"SQL / PostgreSQL     ███████████░░░  80%" },
+      { t:"",     v:"Git / GitHub         ████████████░░  88%" },
+      { t:"",     v:"AWS / Cloud          ██████████░░░░  72%" },
+    ],
+    "~/projects/worknest/info.txt": [
+      { t:"ok",   v:"PROJECT: WorkNest" },
+      { t:"dim",  v:"──────────────────" },
+      { t:"",     v:"Stack : React · Bun · SQLite · Turborepo" },
+      { t:"",     v:"Type  : Collaborative workspace monorepo" },
+      { t:"",     v:"" },
+      { t:"bold", v:"Live  : https://worknest-07.netlify.app" },
+      { t:"bold", v:"Repo  : github.com/sahil-narula7/Worknest-collaborative-workspace" },
+      { t:"",     v:"" },
+      { t:"warn", v:"Tip: type  open worknest  to launch live site" },
+    ],
+    "~/projects/dino-history/info.txt": [
+      { t:"ok",   v:"PROJECT: Dino History" },
+      { t:"dim",  v:"──────────────────────" },
+      { t:"",     v:"Stack : HTML · CSS · JavaScript" },
+      { t:"",     v:"Type  : Interactive educational platform" },
+      { t:"",     v:"" },
+      { t:"bold", v:"Live  : https://sn-dinos.netlify.app" },
+      { t:"bold", v:"Repo  : github.com/sahil-narula7/Dino-History" },
+      { t:"",     v:"" },
+      { t:"warn", v:"Tip: type  open dino-history  to launch live site" },
+    ],
+    "~/projects/alien-explorer/info.txt": [
+      { t:"ok",   v:"PROJECT: Alien Explorer" },
+      { t:"dim",  v:"────────────────────────" },
+      { t:"",     v:"Stack : HTML · CSS · JavaScript" },
+      { t:"",     v:"Type  : Browser-based educational space adventure" },
+      { t:"",     v:"" },
+      { t:"",     v:"Teaches Maths, Science, Logic, Reasoning, and" },
+      { t:"",     v:"Applied Thinking through interactive quiz missions." },
+      { t:"",     v:"" },
+      { t:"bold", v:"Live  : alien-explorer-hackathon-2026.s3-website-us-east-1.amazonaws.com" },
+      { t:"bold", v:"Repo  : github.com/sahil-narula7/Alien-Explorer" },
+      { t:"",     v:"" },
+      { t:"warn", v:"Tip: type  open alien-explorer  to launch live site" },
+    ],
+    "~/documents/experience.log": [
+      { t:"ok",   v:"EXPERIENCE.LOG" },
+      { t:"dim",  v:"───────────────" },
+      { t:"bold", v:"[2026] Software Engineering Intern" },
+      { t:"",     v:"       Full-stack development · React · Node.js · SQL" },
+      { t:"",     v:"" },
+      { t:"bold", v:"[2025] Technical Training" },
+      { t:"",     v:"       APIs · Git · Database design · Deployment" },
+    ],
+    "~/documents/leadership.md": [
+      { t:"ok",   v:"LEADERSHIP.MD" },
+      { t:"dim",  v:"──────────────" },
+      { t:"bold", v:"TechSpace Open Lab · 2024–2025" },
+      { t:"",     v:"Team Lead — 15 members" },
+      { t:"",     v:"" },
+      { t:"",     v:"→ Delivered hands-on workshops for 80+ students" },
+      { t:"",     v:"→ Coordinated technical projects end-to-end" },
+      { t:"",     v:"→ Mentored junior developers" },
+    ],
+    "~/documents/skills.txt": [
+      { t:"warn", v:"→ See ~/skills/superpowers.txt for full list" },
+      { t:"dim",  v:"  type:  cd skills && cat superpowers.txt" },
+    ],
+    "~/contact/email.txt": [
+      { t:"ok",   v:"EMAIL" },
+      { t:"bold", v:"sahilnarula254@gmail.com" },
+    ],
+    "~/contact/links.txt": [
+      { t:"ok",   v:"LINKS" },
+      { t:"dim",  v:"──────" },
+      { t:"bold", v:"LinkedIn : linkedin.com/in/sahil-narula7/" },
+      { t:"bold", v:"GitHub   : github.com/sahil-narula7" },
+      { t:"bold", v:"Live Site: sahilnarula.in" },
+    ],
+  };
+
+  /* ── live URLs for open command ── */
+  const OPEN_URLS = {
+    "worknest":       "https://worknest-07.netlify.app",
+    "dino-history":   "https://sn-dinos.netlify.app",
+    "alien-explorer": "http://alien-explorer-hackathon-2026.s3-website-us-east-1.amazonaws.com",
+    "github":         "https://github.com/sahil-narula7",
+    "linkedin":       "https://www.linkedin.com/in/sahil-narula7/",
+    "portfolio":      "https://sahilnarula.in",
+  };
+
+  /* ── window open aliases ── */
+  const CD_ALIASES = {
+    "about":    "about-window",
+    "skills":   "skills-window",
+    "projects": "work-window",
+    "work":     "work-window",
+    "contact":  "contact-window",
+    "documents":"documents-window",
+    "dino":     "dino-window",
+    "home":     "computer-window",
+    "~":        "computer-window",
+  };
+
+  /* ─── print helpers ─── */
+  function print(text, type = "") {
+    const line = document.createElement("div");
+    line.className = "term-line" + (type ? ` term-${type}` : "");
+    line.textContent = text;
+    outputEl.appendChild(line);
+    scrollBottom();
+  }
+
+  function printHTML(html) {
+    const line = document.createElement("div");
+    line.className = "term-line";
+    line.innerHTML = html;
+    outputEl.appendChild(line);
+    scrollBottom();
+  }
+
+  function printBlank() { print(""); }
+
+  function scrollBottom() {
+    outputEl.scrollTop = outputEl.scrollHeight;
+  }
+
+  function printLines(lines) {
+    lines.forEach(l => print(l.v, l.t || ""));
+  }
+
+  function printPromptEcho(cmd) {
+    print(`visitor@sahil:${cwd}$ ${cmd}`, "cmd");
+  }
+
+  /* ─── command router ─── */
+  function runCommand(raw) {
+    const trimmed = raw.trim();
+    if (!trimmed) return;
+
+    // history
+    history.unshift(trimmed);
+    histIdx = -1;
+
+    printPromptEcho(trimmed);
+
+    const parts = trimmed.split(/\s+/);
+    const cmd   = parts[0].toLowerCase();
+    const arg   = parts.slice(1).join(" ").toLowerCase();
+
+    switch (cmd) {
+
+      case "help":
+        print("──────────────────────────────────────────", "dim");
+        print(" AVAILABLE COMMANDS", "ok");
+        print("──────────────────────────────────────────", "dim");
+        print("  help                  show this list", "");
+        print("  ls  / dir             list current directory", "");
+        print("  cd  <section>         navigate to section", "");
+        print("  cat <file>            read a file", "");
+        print("  pwd                   show current path", "");
+        print("  clear / cls           clear terminal", "");
+        print("──────────────────────────────────────────", "dim");
+        print("  whoami                about Sahil", "");
+        print("  skills                tech stack", "");
+        print("  projects              list all projects", "");
+        print("  open <project>        launch project in browser", "");
+        print("  github                open GitHub profile", "");
+        print("  contact               contact info", "");
+        print("──────────────────────────────────────────", "dim");
+        print("  theme                 toggle dark / light mode", "");
+        print("  dino                  launch dino.exe game", "");
+        print("  secret                ??", "");
+        print("  date                  current date & time", "");
+        print("──────────────────────────────────────────", "dim");
+        print("  Tab                   autocomplete", "warn");
+        print("  ↑ / ↓                 command history", "warn");
+        break;
+
+      case "ls":
+      case "dir": {
+        const items = FS[cwd === "~" ? "~" : cwd] || FS["~"];
+        print(`total ${items.length}`, "dim");
+        items.forEach(item => {
+          if (item.endsWith("/")) print(`  drwx  ${item}`, "ok");
+          else print(`  -rw-  ${item}`, "");
+        });
+        break;
+      }
+
+      case "pwd":
+        print(cwd === "~" ? "/home/sahil" : `/home/sahil/${cwd.replace("~/","")}`, "ok");
+        break;
+
+      case "cd": {
+        if (!arg || arg === "~" || arg === "/") {
+          cwd = "~";
+          print("~", "ok");
+          // open home window
+          if (typeof showWindow === "function") showWindow("computer-window");
+          break;
+        }
+        if (arg === "..") {
+          if (cwd === "~") { print("already at root", "warn"); break; }
+          const parts2 = cwd.split("/");
+          parts2.pop();
+          cwd = parts2.join("/") || "~";
+          print(cwd, "ok");
+          break;
+        }
+        // check alias → open window
+        const winAlias = CD_ALIASES[arg];
+        if (winAlias) {
+          cwd = `~/${arg}`;
+          print(`cd: entering ${cwd}`, "ok");
+          if (typeof showWindow === "function") showWindow(winAlias);
+          break;
+        }
+        // check FS
+        const target = cwd === "~" ? `~/${arg}` : `${cwd}/${arg}`;
+        if (FS[target]) {
+          cwd = target;
+          print(cwd, "ok");
+        } else {
+          print(`cd: ${arg}: No such directory`, "err");
+          print(`Tip: type  ls  to see what's here`, "dim");
+        }
+        break;
+      }
+
+      case "cat": {
+        if (!arg) { print("cat: missing filename. Usage: cat <file>", "err"); break; }
+        // resolve path
+        const filePath = arg.startsWith("~/") ? arg : `${cwd}/${arg}`;
+        if (FILES[filePath]) {
+          printBlank();
+          printLines(FILES[filePath]);
+          printBlank();
+        } else {
+          print(`cat: ${arg}: No such file`, "err");
+          print(`Tip: type  ls  to see files here`, "dim");
+        }
+        break;
+      }
+
+      case "whoami":
+        printBlank();
+        printLines(FILES["~/about/readme.txt"]);
+        printBlank();
+        break;
+
+      case "skills":
+        printBlank();
+        printLines(FILES["~/skills/superpowers.txt"]);
+        printBlank();
+        break;
+
+      case "projects":
+        print("──────────────────────────────────────", "dim");
+        print(" PROJECTS", "ok");
+        print("──────────────────────────────────────", "dim");
+        print("  01  WorkNest         worknest-07.netlify.app", "bold");
+        print("  02  Dino History     sn-dinos.netlify.app", "bold");
+        print("  03  Alien Explorer   alien-explorer on AWS S3", "bold");
+        print("──────────────────────────────────────", "dim");
+        print("  type:  open worknest        to launch", "warn");
+        print("  type:  open dino-history    to launch", "warn");
+        print("  type:  open alien-explorer  to launch", "warn");
+        break;
+
+      case "open": {
+        if (!arg) { print("open: usage:  open <project>", "err"); break; }
+        const url = OPEN_URLS[arg.replace(/\s+/g, "-")];
+        if (url) {
+          print(`opening ${url} ...`, "ok");
+          window.open(url, "_blank", "noreferrer");
+        } else {
+          print(`open: '${arg}' not found`, "err");
+          print("available: worknest, dino-history, alien-explorer, github, linkedin, portfolio", "dim");
+        }
+        break;
+      }
+
+      case "github":
+        print("opening github.com/sahil-narula7 ...", "ok");
+        window.open("https://github.com/sahil-narula7", "_blank", "noreferrer");
+        break;
+
+      case "contact":
+        printBlank();
+        print("─────────────────────────────────", "dim");
+        print(" CONTACT", "ok");
+        print("─────────────────────────────────", "dim");
+        print("  Email    : sahilnarula254@gmail.com", "bold");
+        print("  LinkedIn : linkedin.com/in/sahil-narula7/", "bold");
+        print("  GitHub   : github.com/sahil-narula7", "bold");
+        print("  Site     : sahilnarula.in", "bold");
+        print("─────────────────────────────────", "dim");
+        printBlank();
+        break;
+
+      case "clear":
+      case "cls":
+        outputEl.innerHTML = "";
+        print("terminal cleared", "dim");
+        break;
+
+      case "theme":
+        if (typeof applyTheme === "function") {
+          applyTheme(currentTheme === "dark" ? "light" : "dark");
+          print(`theme: switched to ${currentTheme} mode`, "ok");
+        }
+        break;
+
+      case "dino":
+        print("launching dino.exe ...", "ok");
+        if (typeof showWindow === "function") showWindow("dino-window");
+        break;
+
+      case "date":
+        print(new Date().toString(), "ok");
+        break;
+
+      case "secret":
+        print("// try the Konami Code on the desktop //", "warn");
+        print("↑ ↑ ↓ ↓ ← → ← → B A", "ok");
+        break;
+
+      case "exit":
+      case "quit":
+        print("closing terminal ...", "dim");
+        setTimeout(() => {
+          const w = document.getElementById("terminal-window");
+          if (w) { w.classList.add("minimizing"); setTimeout(() => w.classList.remove("open"), 220); }
+        }, 300);
+        break;
+
+      case "matrix":
+        print("// use Konami Code for the real thing //", "dim");
+        print("↑ ↑ ↓ ↓ ← → ← → B A", "warn");
+        break;
+
+      case "echo":
+        print(parts.slice(1).join(" ") || "", "ok");
+        break;
+
+      case "uname":
+        print("sahil.exe OS v2005.04 — Darwin/retro/arm64", "ok");
+        break;
+
+      case "ping":
+        print(`PING ${arg || "sahilnarula.in"}: 64 bytes — time=1.2ms`, "ok");
+        print(`PING ${arg || "sahilnarula.in"}: 64 bytes — time=0.9ms`, "ok");
+        print(`PING ${arg || "sahilnarula.in"}: 64 bytes — time=1.1ms`, "ok");
+        print(`--- 3 packets transmitted, 3 received, 0% packet loss ---`, "dim");
+        break;
+
+      default:
+        print(`command not found: ${cmd}`, "err");
+        print(`type  help  to see available commands`, "dim");
+    }
+
+    printBlank();
+  }
+
+  /* ─── Tab autocomplete ─── */
+  function autocomplete(val) {
+    const parts2 = val.trim().split(/\s+/);
+    if (parts2.length === 1) {
+      // complete command
+      const cmds = ["help","ls","dir","cd","cat","pwd","clear","cls","whoami",
+                    "skills","projects","open","github","contact","theme","dino",
+                    "date","secret","exit","echo","uname","ping","matrix"];
+      const match = cmds.filter(c => c.startsWith(val));
+      if (match.length === 1) return match[0];
+      if (match.length > 1) { print(match.join("  "), "dim"); return val; }
+    }
+    if (parts2.length === 2) {
+      const base = parts2[0];
+      const partial = parts2[1];
+      // complete filenames from cwd
+      const items = (FS[cwd] || []).map(i => i.replace("/",""));
+      const match = items.filter(i => i.startsWith(partial));
+      if (match.length === 1) return `${base} ${match[0]}`;
+      if (match.length > 1) { print(match.join("  "), "dim"); return val; }
+      // complete open targets
+      if (base === "open") {
+        const targets = Object.keys(OPEN_URLS);
+        const m = targets.filter(t => t.startsWith(partial));
+        if (m.length === 1) return `open ${m[0]}`;
+        if (m.length > 1) { print(m.join("  "), "dim"); return val; }
+      }
+    }
+    return val;
+  }
+
+  /* ─── Input events ─── */
+  inputEl.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const val = inputEl.value;
+      inputEl.value = "";
+      runCommand(val);
+      return;
+    }
+    if (e.key === "Tab") {
+      e.preventDefault();
+      inputEl.value = autocomplete(inputEl.value);
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (histIdx < history.length - 1) {
+        histIdx++;
+        inputEl.value = history[histIdx];
+      }
+      return;
+    }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (histIdx > 0) { histIdx--; inputEl.value = history[histIdx]; }
+      else { histIdx = -1; inputEl.value = ""; }
+      return;
+    }
+    // Ctrl+C
+    if (e.key === "c" && e.ctrlKey) {
+      print(`^C`, "err");
+      inputEl.value = "";
+      return;
+    }
+    // Ctrl+L = clear
+    if (e.key === "l" && e.ctrlKey) {
+      e.preventDefault();
+      outputEl.innerHTML = "";
+      return;
+    }
+  });
+
+  // click anywhere in term body = focus input
+  bodyEl.addEventListener("click", () => inputEl.focus());
+
+  // auto-focus when window opens
+  const termWinObserver = new MutationObserver(() => {
+    if (winEl.classList.contains("open")) {
+      setTimeout(() => inputEl.focus(), 80);
+    }
+  });
+  termWinObserver.observe(winEl, { attributes: true, attributeFilter: ["class"] });
+
+})();

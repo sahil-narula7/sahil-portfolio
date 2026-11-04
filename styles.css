@@ -903,3 +903,105 @@ a { text-decoration: none; color: inherit; }
     width: calc(100% - 90px);
   }
 }
+
+/* ══════════════════════════════════════
+   TERMINAL WINDOW
+══════════════════════════════════════ */
+.term-window {
+  left: 8%;
+  top: 9%;
+  width: min(680px, calc(100% - 120px));
+}
+
+.term-icon { color: var(--cyan) !important; font-size: 36px !important; }
+
+.term-body {
+  background: #020c0e;
+  min-height: 340px;
+  max-height: 420px;
+  display: flex;
+  flex-direction: column;
+  font: 13px "DM Mono", monospace;
+  padding: 0;
+  overflow: hidden;
+}
+
+[data-theme="light"] .term-body { background: #0d1f22; }
+
+.term-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  scroll-behavior: smooth;
+}
+
+/* scrollbar */
+.term-output::-webkit-scrollbar { width: 4px; }
+.term-output::-webkit-scrollbar-track { background: transparent; }
+.term-output::-webkit-scrollbar-thumb { background: var(--line-c); border-radius: 2px; }
+
+.term-line {
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.term-cmd   { color: #c5ffc0; }
+.term-ok    { color: var(--cyan); }
+.term-err   { color: var(--red); }
+.term-warn  { color: var(--amber); }
+.term-dim   { color: #4a7a6a; }
+.term-highlight { color: var(--amber); }
+.term-bold  { color: #e0f5f0; font-weight: 500; }
+.term-muted { color: #3a6a5a; }
+.term-link  {
+  color: var(--cyan);
+  border-bottom: 1px solid var(--cyan);
+  cursor: pointer;
+  text-decoration: none;
+}
+.term-link:hover { color: var(--amber); border-color: var(--amber); }
+
+.term-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 12px;
+  border-top: 1px solid #0e2e30;
+  background: #020c0e;
+  flex-shrink: 0;
+}
+[data-theme="light"] .term-input-row { background: #0d1f22; }
+
+.term-prompt {
+  color: var(--cyan);
+  white-space: nowrap;
+  font: 12px "DM Mono", monospace;
+  flex-shrink: 0;
+}
+
+.term-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #c5ffc0;
+  font: 13px "DM Mono", monospace;
+  caret-color: var(--cyan);
+  min-width: 0;
+}
+
+.term-input::placeholder { color: #2a5a4a; }
+
+@media (max-width: 700px) {
+  .term-window {
+    left: 10px; top: 35px;
+    width: calc(100% - 90px);
+  }
+  .term-body { min-height: 280px; max-height: 320px; }
+  .term-input-row { padding: 8px 12px; }
+  .term-output { padding: 10px 12px 6px; }
+}
