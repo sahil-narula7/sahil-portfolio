@@ -1005,3 +1005,100 @@ a { text-decoration: none; color: inherit; }
   .term-input-row { padding: 8px 12px; }
   .term-output { padding: 10px 12px 6px; }
 }
+
+/* ══════════════════════════════════════
+   FINDER MENU DROPDOWN (Matrix trigger)
+══════════════════════════════════════ */
+.finder-menu-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.finder-menu-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font: 12px "DM Mono", monospace;
+  padding: 0 4px;
+  cursor: pointer;
+  letter-spacing: .03em;
+  transition: color .15s;
+  white-space: nowrap;
+}
+.finder-menu-btn:hover,
+.finder-menu-item.open .finder-menu-btn {
+  color: var(--cyan);
+}
+
+.finder-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 240px;
+  background: var(--bar-bg);
+  border: 1px solid var(--bar-border);
+  box-shadow: 4px 8px 24px var(--shadow);
+  z-index: 999;
+  backdrop-filter: blur(12px);
+  padding: 4px 0;
+  animation: dropdownAppear .12s ease-out;
+}
+.finder-menu-item.open .finder-dropdown {
+  display: block;
+}
+
+@keyframes dropdownAppear {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.finder-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  font: 11px "DM Mono", monospace;
+  color: var(--paper);
+  cursor: pointer;
+  transition: background .1s;
+  white-space: nowrap;
+}
+.finder-dropdown-item:hover {
+  background: var(--cyan);
+  color: var(--ink);
+}
+.finder-dropdown-item.disabled {
+  color: var(--muted);
+  cursor: default;
+  font-size: 10px;
+}
+.finder-dropdown-item.disabled:hover {
+  background: transparent;
+  color: var(--muted);
+}
+
+.finder-item-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.finder-item-key {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: .04em;
+}
+.finder-dropdown-item:hover .finder-item-key {
+  color: var(--ink);
+}
+
+.finder-dropdown-divider {
+  height: 1px;
+  background: var(--bar-border);
+  margin: 4px 0;
+}
+
+@media (max-width: 700px) {
+  .finder-menu-item { display: none; }
+}

@@ -263,9 +263,33 @@ function startCursorTrail() {
 }
 
 /* ══════════════════════════════════════
-   KONAMI CODE → MATRIX RAIN
+   FINDER MENU — Matrix dropdown
+══════════════════════════════════════ */
+const matrixMenuBtn  = document.getElementById("matrixMenuBtn");
+const matrixTrigger  = document.getElementById("matrixTrigger");
+const matrixDropdown = document.getElementById("matrixDropdown");
+
+// toggle dropdown on button click
+matrixMenuBtn?.addEventListener("click", e => {
+  e.stopPropagation();
+  matrixMenuBtn.classList.toggle("open");
+});
+
+// click "System Override" → fire matrix
+matrixTrigger?.addEventListener("click", e => {
+  e.stopPropagation();
+  matrixMenuBtn.classList.remove("open");
+  toggleMatrix();
+});
+
+// close dropdown when clicking anywhere else
+document.addEventListener("click", () => {
+  matrixMenuBtn?.classList.remove("open");
+});
+
+/* ══════════════════════════════════════
+   KONAMI CODE → MATRIX RAIN (keyboard fallback)
    ↑ ↑ ↓ ↓ ← → ← → B A
-   Click anywhere on desktop first to focus
 ══════════════════════════════════════ */
 const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
 let konamiIdx = 0, matrixActive = false;
