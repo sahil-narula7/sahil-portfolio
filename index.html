@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sahil Narula — retro computer desktop portfolio"
+    />
+    <title>sahil.exe | Desktop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <!-- ══════════════════════════════════════
+           TERMINAL BOOT SCREEN
+      ══════════════════════════════════════ -->
+      <section
+        class="terminal-screen"
+        id="terminal"
+        tabindex="0"
+        aria-label="Portfolio boot screen"
+      >
+        <div class="terminal-topbar">
+          <div class="traffic-lights" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </div>
+          <span>visitor@sahil.portfolio: ~</span
+          ><span class="topbar-status">● online</span>
+        </div>
+        <div class="terminal-body">
+          <div class="boot-copy">
+            <p class="muted">SAHIL NARULA SYSTEMS // v.2005.04</p>
+            <p class="line">
+              initializing creative thinking<span class="dots">...</span>
+            </p>
+            <p class="line">loading experience<span class="dots">...</span></p>
+            <p class="line error">error: experience not found!!</p>
+            <p class="line">xoxo, made in 2005<span class="cursor"></span></p>
+            <p class="line secret-hint">// try: ↑↑↓↓←→←→BA for a secret //</p>
+          </div>
+          <div class="prompt-row" id="promptRow">
+            <span>visitor@sahil.portfolio: $</span
+            ><span id="promptHint">press enter to continue</span
+            ><span class="cursor"></span>
+          </div>
+          <div class="countdown" id="countdown"></div>
+          <div class="boot-error" id="bootError">
+            visitor@sahil.portfolio: $ error 404 !! system hack
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════
+           DESKTOP
+      ══════════════════════════════════════ -->
+      <section class="desktop" id="portfolio" aria-label="Sahil Narula desktop">
+        <div class="desktop-noise"></div>
+
+        <!-- System bar -->
+        <header class="system-bar">
+          <div class="system-menu">
+            <button
+              class="apple dino-launcher"
+              id="creativeToggle"
+              aria-label="Open dino game"
+              title="Click to play dino.exe"
+            >✳</button
+            ><strong>Finder</strong><span>File</span><span>Edit</span
+            ><span>View</span><span>Go</span><span>Window</span
+            ><span>Help</span>
+          </div>
+          <div class="system-status">
+            <span class="uptime-badge" id="uptime">UPTIME: 0s</span>
+            <span class="konami-badge" title="Try the Konami code!">✦</span>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">☾ DARK</button>
+            <span>◐</span><span id="clock">09:41</span>
+          </div>
+        </header>
+
+        <div class="desktop-area">
+          <!-- Desktop icons -->
+          <div class="desktop-icons">
+            <button class="desktop-icon" data-window="about-window">
+              <span class="icon folder-icon">▰</span><strong>about me</strong>
+            </button>
+            <button class="desktop-icon" data-window="skills-window">
+              <span class="icon folder-icon">▰</span><strong>tech superpowers</strong>
+            </button>
+            <button class="desktop-icon" data-window="work-window">
+              <span class="icon folder-icon">▰</span><strong>selected work</strong>
+            </button>
+            <button class="desktop-icon" data-window="documents-window">
+              <span class="icon document-icon">▤</span><strong>documents</strong>
+            </button>
+            <button class="desktop-icon" data-window="computer-window">
+              <span class="icon computer-icon">▣</span><strong>sahil.exe</strong>
+            </button>
+            <button class="desktop-icon" data-window="contact-window">
+              <span class="icon mail-icon">✉</span><strong>contact me</strong>
+            </button>
+            <button class="desktop-icon" data-window="dino-window">
+              <span class="icon dino-icon">🦕</span><strong>dino.exe</strong>
+            </button>
+          </div>
+
+          <!-- ── MAIN WINDOW (Home / Hero) ── -->
+          <div class="window main-window" id="computer-window">
+            <div class="window-titlebar">
+              <span class="traffic-lights"><i></i><i></i><i></i></span
+              ><strong>about_sahil.exe</strong
+              ><button class="window-tools close-window" aria-label="Close about Sahil window">
+                — □ ×
+              </button>
+            </div>
+            <div class="window-menu">
+              File <span>Edit</span> <span>View</span> <span>Help</span>
+            </div>
+            <div class="window-body computer-body">
+              <div class="computer-copy">
+                <span class="prompt">C:\USERS\SAHIL&gt; WHOAMI</span>
+                <h1>
+                  Hi, I'm Sahil.<br /><em>I build things<br />with a little spark.</em>
+                </h1>
+                <p>
+                  Software engineering intern and full-stack developer based in
+                  New Delhi, India. I build practical, human-centered products
+                  with React, JavaScript, Node.js, and SQL.
+                </p>
+                <div class="actions">
+                  <button data-window="work-window">OPEN WORK</button
+                  ><button data-window="contact-window">CONNECT</button>
+                </div>
+                <p class="hosted-badge">
+                  <span class="badge-dot"></span> Hosted on&nbsp;
+                  <strong>AWS Amplify</strong>
+                </p>
+              </div>
+              <figure class="computer-art">
+                <div class="screen-label">sahil.exe — visual processor</div>
+                <img src="computer.gif" alt="Retro computer illustration" />
+                <figcaption>creative signal detected // 001</figcaption>
+              </figure>
+            </div>
+            <div class="statusbar">
+              <span>1 item selected</span><span>READY</span>
+            </div>
+          </div>
+
+          <!-- ── ABOUT WINDOW ── -->
+          <div class="window hidden-window" id="about-window">
+            <div class="window-titlebar">
+              <span class="traffic-lights"><i></i><i></i><i></i></span
+              ><strong>about me / readme.txt</strong
+              ><button class="window-tools close-window" aria-label="Close about me window">
+                — □ ×
+              </button>
+            </div>
+            <div class="window-body text-body">
+              <span class="prompt">C:\ABOUT\README.TXT</span>
+              <h2>Code with intent.<br /><em>Curiosity included.</em></h2>
+              <p>
+                I'm Sahil, a Computer Science student and software engineering
+                intern who enjoys turning ideas into reliable, polished web
+                experiences.
+              </p>
+              <p>
+                I work across frontend and backend development — from reusable
+                React interfaces to APIs, SQLite operations, and deployment
+                workflows. I also lead a 15-member technical team at TechSpace
+                Open Lab and have delivered hands-on workshops for 80+ students.
+              </p>
+              <p class="muted-copy">
+                STATUS: SOFTWARE ENGINEERING INTERN<br />LOCATION: NEW DELHI,
+                INDIA<br />STACK: REACT / NODE.JS / SQL / GIT / AWS
+              </p>
+            </div>
+          </div>
+
+          <!-- ── SKILLS WINDOW ── -->
+          <div class="window hidden-window skills-window" id="skills-window">
+            <div class="window-titlebar">
+              <span class="traffic-lights"><i></i><i></i><i></i></span
+              ><strong>tech_superpowers / skills.txt</strong
+              ><button class="window-tools close-window" aria-label="Close tech superpowers window">
+                — □ ×
+              </button>
+            </div>
+            <div class="window-body text-body">
+              <span class="prompt">C:\SKILLS\SUPERPOWERS.EXE</span>
+              <h2>My tech<br /><em>superpowers.</em></h2>
+
+              <div class="skill-list">
+                <div class="skill-row">
+                  <span class="skill-name">React / TypeScript</span>
+                  <div class="skill-track"><div class="skill-bar-fill" data-pct="90"></div></div>
+                  <span class="skill-pct">90%</span>
+                </div>
+                <div class="skill-row">
+                  <span class="skill-name">Node.js / REST APIs</span>
+                  <div class="skill-track"><div class="skill-bar-fill" data-pct="85"></div></div>
+                  <span class="skill-pct">85%</span>
+                </div>
+                <div class="skill-row">
+                  <span class="skill-name">SQL / PostgreSQL</span>
+                  <div class="skill-track"><div class="skill-bar-fill" data-pct="80"></div></div>
+                  <span class="skill-pct">80%</span>
+                </div>
+                <div class="skill-row">
+                  <span class="skill-name">HTML / CSS / Design</span>
+                  <div class="skill-track"><div class="skill-bar-fill" data-pct="95"></div></div>
+                  <span class="skill-pct">95%</span>
+                </div>
+                <div class="skill-row">
+                  <span class="skill-name">Git / GitHub</span>
+                  <div class="skill-track"><div class="skill-bar-fill" data-pct="88"></div></div>
+                  <span class="skill-pct">88%</span>
+                </div>
+                <div class="skill-row">
+                  <span class="skill-name">AWS / Cloud</span>
+                  <div class="skill-track"><div class="skill-bar-fill aws-bar" data-pct="72"></div></div>
+                  <span class="skill-pct">72%</span>
+                </div>
+              </div>
+
+              <p class="muted-copy" style="margin-top:18px;">
+                BONUS SKILL: EXPLAINING COMPLEX IDEAS TO NEW DEVELOPERS
+              </p>
+            </div>
+          </div>
+
+          <!-- ── WORK / PROJECTS WINDOW ── -->
+          <div class="window hidden-window wide-window" id="work-window">
+            <div class="window-titlebar">
+              <span class="traffic-lights"><i></i><i></i><i></i></span
+              ><strong>selected_work / folder</strong
+              ><button class="window-tools close-window" aria-label="Close selected work window">
+                — □ ×
+              </button>
+            </div>
+            <div class="window-menu">
+              File <span>Edit</span> <span>View</span> <span>Sort by ▾</span>
+            </div>
+            <div class="file-grid">
+              <article>
+                <div class="file-preview cyan-preview">01</div>
+                <strong>WorkNest</strong>
+                <small>
+                  React · Bun · SQLite · Turborepo<br />
+                  Collaborative workspace with reusable frontend components,
+                  backend APIs, and a modular monorepo.
+                </small>
+                <a
+                  href="https://github.com/sahil-narula7"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="project-link"
+                >GitHub ↗</a>
+              </article>
+              <article>
+                <div class="file-preview amber-preview">02</div>
+                <strong>Dino History</strong>
+                <small>
+                  HTML · CSS · JavaScript<br />
+                  Interactive educational platform with structured browsing
+                  and responsive navigation.
+                </small>
+                <a
+                  href="https://github.com/sahil-narula7"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="project-link"
+                >GitHub ↗</a>
+              </article>
+              <article>
+                <div class="file-preview red-preview">03</div>
+                <strong>Luxury Cars</strong>
+                <small>
+                  HTML · CSS · JavaScript<br />
+                  Responsive automotive showcase with premium visual
+                  presentation and navigation.
+                </small>
+                <a
+                  href="https://github.com/sahil-narula7"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="project-link"
+                >GitHub ↗</a>
+              </article>
+            </div>
+            <div class="statusbar">
+              <span>3 items</span><span>SELECTED WORK</span>
+            </div>
+          </div>
+
+          <!-- ── DOCUMENTS WINDOW ── -->
+          <div class="window hidden-window small-window" id="documents-window">
+            <div class="window-titlebar">
+              <span class="traffic-lights"><i></i><i></i><i></i></span
+              ><strong>documents</strong
+              ><button class="window-tools close-window" aria-label="Close documents window">
+                — □ ×
+              </button>
+            </div>
+            <div class="file-list">
+              <button>
+                <span class="mini-icon">▤</span><span>experience.log</span
+                ><small>Software / Technical Training · 2026</small>
+              </button>
+              <button>
+                <span class="mini-icon">▤</span><span>leadership.md</span
+                ><small>TechSpace Open Lab · 2024–2025</small>
+              </button>
+              <button>
+                <span class="mini-icon">▤</span><span>skills.txt</span
+                ><small>React · Node.js · SQL · Git · AWS</small>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── CONTACT WINDOW ── -->
+          <div class="window hidden-window contact-window" id="contact-window">
+            <div class="window-titlebar">
+              <span class="traffic-lights"><i></i><i></i><i></i></span
+              ><strong>new_message.exe</strong
+              ><button class="window-tools close-window" aria-label="Close contact window">
+                — □ ×
+              </button>
+            </div>
+            <div class="window-body text-body">
+              <span class="prompt">C:\CONTACT\NEW_MESSAGE</span>
+              <h2>Let's make<br /><em>something good.</em></h2>
+              <p>For projects, collaborations, or a nice weird idea:</p>
+              <a class="email-link" href="mailto:sahilnarula254@gmail.com"
+                >sahilnarula254@gmail.com ↗</a>
+              <p class="social-links">
+                <a
+                  href="https://www.linkedin.com/in/sahil-narula7/"
+                  target="_blank"
+                  rel="noreferrer"
+                >LinkedIn ↗</a
+                ><a
+                  href="https://github.com/sahil-narula7"
+                  target="_blank"
+                  rel="noreferrer"
+                >GitHub ↗</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- ── DINO GAME WINDOW ── -->
+          <div class="window hidden-window dino-window" id="dino-window">
+            <div class="window-titlebar">
+              <span class="traffic-lights"><i></i><i></i><i></i></span
+              ><strong>dino.exe — no signal runner</strong
+              ><button class="window-tools close-window" aria-label="Close dino game">
+                — □ ×
+              </button>
+            </div>
+            <div class="window-menu">
+              Game <span>Controls</span> <span>High Score</span> <span>Help</span>
+            </div>
+            <div class="dino-container">
+              <canvas id="dino-canvas" width="700" height="220" aria-label="Dino runner game"></canvas>
+              <div class="dino-ui">
+                <span class="dino-score-label">SCORE: <span id="dino-score">0</span></span>
+                <span class="dino-hi-label">HI: <span id="dino-hi">0</span></span>
+              </div>
+              <p class="dino-hint" id="dino-hint">PRESS SPACE / ↑ / TAP TO START</p>
+            </div>
+            <div class="statusbar">
+              <span>no signal detected · score increases speed</span><span>SPACE/↑ = JUMP (x2) &nbsp;|&nbsp; ↓ = DUCK &nbsp;|&nbsp; TAP = JUMP</span>
+            </div>
+          </div>
+
+        </div><!-- /.desktop-area -->
+
+        <!-- Dock -->
+        <footer class="dock">
+          <button data-window="computer-window">
+            <span>▣</span><small>Home</small>
+          </button>
+          <button data-window="work-window">
+            <span>▰</span><small>Work</small>
+          </button>
+          <button data-window="documents-window">
+            <span>▤</span><small>Files</small>
+          </button>
+          <button data-window="contact-window">
+            <span>✉</span><small>Mail</small>
+          </button>
+          <i></i>
+          <span class="dock-caption">sahil.exe · creative developer</span>
+          <span class="creative-hint">hint: click ✳ · secret: ↑↑↓↓←→←→BA</span>
+        </footer>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
