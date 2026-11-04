@@ -271,12 +271,10 @@ const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRi
 let konamiIdx = 0, matrixActive = false;
 let matrixCanvas, matrixCtx2, matrixRAF, matrixCols, matrixDrops;
 
-// listen on document so it works anywhere on the page
+// listen on document so it works anywhere — only skip terminal input box
 document.addEventListener("keydown", e => {
-  // skip if typing in input/textarea
-  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
-  // skip boot screen keys
-  if (terminal && !terminal.classList.contains("done")) return;
+  if (e.target.id === "term-input") return;          // typing in terminal
+  if (terminal && !terminal.classList.contains("done")) return; // boot screen
   if (e.key === KONAMI[konamiIdx]) {
     if (++konamiIdx === KONAMI.length) { konamiIdx = 0; toggleMatrix(); }
   } else { konamiIdx = 0; }
